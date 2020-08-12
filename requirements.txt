@@ -1,0 +1,7 @@
+transformers
+tensorflow
+spacy
+scikit-learn
+sentence-transformers
+html2text
+requests

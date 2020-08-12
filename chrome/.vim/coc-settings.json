@@ -1,0 +1,5 @@
+{
+  "diagnostic.level": "warning",
+  "eslint.autoFixOnSave": true,
+  "eslint.options": { "configFile": "/Users/yoavzimmerman/email-summarization/chrome/.eslintrc.json", "resolvePluginsRelativeTo": "/Users/yoavzimmerman/email-summarization/chrome" }
+}

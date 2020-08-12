@@ -1,0 +1,39 @@
+{
+    "manifest_version": 2,
+    "name": "Super Ctrl F",
+    "short_name": "Super Ctrl F",
+    "author": "Yoav Zimmerman <yoavzimmerman@gmail.com>",
+    "background": {
+      "page": "background.html"
+    },
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon-16.png",
+        "48": "icon-48.png",
+        "128": "icon-128.png"
+      }
+    },
+    "icons": {
+      "16": "icon-16.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": ["content.bundle.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "permissions": [
+        "storage"
+    ],
+    "web_accessible_resources": [
+        "models/*"
+    ]
+}

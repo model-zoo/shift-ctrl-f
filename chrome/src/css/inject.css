@@ -1,0 +1,270 @@
+.say-less-text-block {
+  /* Turn off "highlighting text" */
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.say-less-text-block:hover {
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgb(233, 79, 55, 0.5);
+}
+
+.say-less-selected {
+  background-color: rgb(233, 79, 55, 0.3) !important;
+}
+
+.say-less-widget {
+  display: inline-block;
+  position: absolute;
+  z-index: 99;
+  top: 10px;
+  right: 5px;
+
+  display: inline-block;
+  line-height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.say-less-button {
+  display: inline-block;
+  height: 32px;
+  border-radius: 16px;
+  padding: 0px 12px;
+  overflow: hidden;
+  margin-left: 5px;
+
+  color: white;
+  border-width: 1em;
+  background-color: #393e41;
+}
+
+.say-less-button:hover {
+  cursor: pointer;
+  width: fit-content;
+}
+
+.say-less-button.selection {
+  width: fit-content;
+}
+
+.say-less-undo-button {
+  display: none;
+  height: 32px;
+  border-radius: 16px;
+  padding: 0px 12px;
+  overflow: hidden;
+
+  color: white;
+  border-width: 1em;
+  background-color: #393e41;
+}
+
+.say-less-undo-button:hover {
+  cursor: pointer;
+}
+
+.say-less-loading-overlay {
+  position: absolute;
+  display: flex;
+  z-index: 99;
+  backdrop-filter: blur(3px);
+}
+
+.say-less-error {
+  margin: auto auto;
+  color: white;
+  border-width: 1em;
+  background-color: #cc0000;
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.say-less-error p {
+  margin: 0px;
+}
+
+.say-less-error pre {
+  margin: 5px 0px 0px 0px;
+}
+
+.say-less-error:hover {
+  cursor: pointer;
+}
+
+@-webkit-keyframes sk-rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes sk-rotateplane {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+  } 50% {
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+  } 100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+
+svg.tea {
+  width: 40px;
+  height: 40px;
+  margin: auto auto;
+}
+
+svg.tea #teabag {
+  transform-origin: top center;
+  transform: rotate(3deg);
+  animation: swing 2s infinite;
+}
+
+svg.tea #steamL {
+  stroke-dasharray: 13;
+  stroke-dashoffset: 13;
+  animation: steamLarge 2s infinite;
+}
+
+svg.tea #steamR {
+  stroke-dasharray: 9;
+  stroke-dashoffset: 9;
+  animation: steamSmall 2s infinite;
+}
+
+@-moz-keyframes swing {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@-webkit-keyframes swing {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@-o-keyframes swing {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes swing {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@-moz-keyframes steamLarge {
+  0% {
+    stroke-dashoffset: 13;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 39;
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes steamLarge {
+  0% {
+    stroke-dashoffset: 13;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 39;
+    opacity: 0;
+  }
+}
+
+@-o-keyframes steamLarge {
+  0% {
+    stroke-dashoffset: 13;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 39;
+    opacity: 0;
+  }
+}
+
+@keyframes steamLarge {
+  0% {
+    stroke-dashoffset: 13;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 39;
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes steamSmall {
+  10% {
+    stroke-dashoffset: 9;
+    opacity: 0.6;
+  }
+  80% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes steamSmall {
+  10% {
+    stroke-dashoffset: 9;
+    opacity: 0.6;
+  }
+  80% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+}
+
+@-o-keyframes steamSmall {
+  10% {
+    stroke-dashoffset: 9;
+    opacity: 0.6;
+  }
+  80% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+}
+
+@keyframes steamSmall {
+  10% {
+    stroke-dashoffset: 9;
+    opacity: 0.6;
+  }
+  80% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+}
