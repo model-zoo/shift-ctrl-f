@@ -38,7 +38,8 @@
     "@tensorflow-models/qna": "^1.0.0",
     "@tensorflow/tfjs": "1.7.4",
     "axios": "^0.19.2",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "mark.js": "^8.11.1"
   },
   "peerDependencies": {}
 }

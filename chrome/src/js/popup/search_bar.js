@@ -30,47 +30,170 @@ const SearchBarState = {
   DONE: 'DONE'
 };
 
+const registerListener = (setState, setAnswers, setErrors) => {
+  chrome.runtime.onMessage.addListener((msg, sender, callback) => {
+    switch (msg.type) {
+      // Do nothing, these messages are handled by the content script.
+      case MessageType.MODEL_SUCCESS:
+      case MessageType.MODEL_ERROR:
+      case MessageType.QUESTION:
+        break;
+
+      case MessageType.QUERY_RESULT:
+        console.log('query answer: ', msg);
+        setAnswers((answers) => [...answers, msg]);
+        break;
+
+      case MessageType.QUERY_ERROR:
+        console.log('query error: ', msg);
+        setErrors((errors) => [...errors, msg]);
+        break;
+
+      case MessageType.QUERY_DONE:
+        setState(SearchBarState.DONE);
+        break;
+
+      default:
+        console.error('Did not recognize message type:', msg);
+        break;
+    }
+  });
+};
+
+const SearchBarInput = (props) => {
+  return (
+    <TextField
+      fullWidth
+      input={props.input}
+      onChange={(e) => {
+        props.setInput(e.target.value);
+      }}
+      disabled={props.state !== SearchBarState.READY}
+    />
+  );
+};
+
 const SearchBarControl = (props) => {
-  if (props.state === SearchBarState.READY) {
-    return (
-      <IconButton size="small">
-        <SearchIcon
-          onClick={() => {
-            props.search();
-          }}
-        />
-      </IconButton>
-    );
-  } else if (props.state === SearchBarState.LOADING) {
-    return (
+  const search = () => {
+    props.setState(SearchBarState.LOADING);
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, {
+        type: MessageType.QUERY,
+        query: props.input
+      });
+    });
+  };
+
+  const select = (newIdx) => {};
+
+  const reset = () => {
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, {
+        type: MessageType.CLEAR
+      });
+    });
+
+    props.setAnswers([]);
+    props.setErrors([]);
+    props.setSelectionIdx(0);
+    props.setState(SearchBarState.READY);
+  };
+
+  return (
+    <>
       <Grid container>
         <Grid item>
-          <IconButton size="small">
+          <IconButton
+            size="small"
+            disabled={props.selectionIdx >= props.answers.length - 1}
+            onClick={() => {
+              props.setSelectionIdx((idx) => idx + 1);
+            }}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </Grid>
         <Grid item>
-          <IconButton size="small">
+          <IconButton
+            size="small"
+            disabled={props.selectionIdx === 0}
+            onClick={() => {
+              props.setSelectionIdx((idx) => idx - 1);
+            }}>
             <KeyboardArrowUpIcon />
           </IconButton>
         </Grid>
-        <Grid item>
-          <IconButton size="small">
-            <CloseIcon
-              onClick={() => {
-                props.setState(SearchBarState.READY);
-              }}
-            />
-          </IconButton>
-        </Grid>
+        {props.state === SearchBarState.READY && (
+          <Grid item>
+            <IconButton size="small" onClick={search}>
+              <SearchIcon />
+            </IconButton>
+          </Grid>
+        )}
+        {props.state === SearchBarState.LOADING && (
+          <Grid item>
+            <IconButton size="small" disabled>
+              <CircularProgress size={22} />
+            </IconButton>
+          </Grid>
+        )}
+        {props.state === SearchBarState.DONE && (
+          <Grid item>
+            <IconButton size="small" onClick={reset}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
-    );
+    </>
+  );
+};
+
+const SearchIndicator = (props) => {
+  if (props.answers.length === 0) {
+    return null;
   }
+
+  return (
+    <span>
+      {props.selectionIdx + 1}/{props.answers.length}
+    </span>
+  );
 };
 
 const SearchBar = (props) => {
   var [state, setState] = useState(SearchBarState.READY);
+  var [answers, setAnswers] = useState([]);
+  var [errors, setErrors] = useState([]);
+  var [selectionIdx, setSelectionIdx] = useState(0);
+
   var [input, setInput] = useState('');
+
+  // Register event listeners for recieving answers and errors
+  // from the content script.
+  useEffect(() => {
+    registerListener(setState, setAnswers, setErrors);
+  }, [setState, setAnswers, setErrors]);
+
+  // Fire a selection event any time answers or selected index
+  // changes.
+  useEffect(() => {
+    if (selectionIdx >= answers.length) {
+      return;
+    }
+
+    const selectionMsg = {
+      type: MessageType.SELECT,
+      answer: answers[selectionIdx].answer,
+      elementId: answers[selectionIdx].elementId
+    };
+
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, selectionMsg);
+    });
+  }, [selectionIdx, answers]);
 
   const gridStyle = {
     width: '450px',
@@ -82,33 +205,28 @@ const SearchBar = (props) => {
     margin: 'auto auto'
   };
 
-  const search = () => {
-    setState(SearchBarState.LOADING);
-    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
-      const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id, {
-        type: MessageType.QUERY,
-        to: Component.CONTENT_SCRIPT,
-        query: input
-      });
-    });
-  };
-
   return (
     <Grid container style={gridStyle} spacing={2}>
-      <Grid item xs={9}>
-        <TextField
-          fullHeight
-          fullWidth
-          input={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-          disabled={state !== SearchBarState.READY}
-        />
+      <Grid item style={itemStyle} xs={answers.length > 0 ? 8 : 9}>
+        <SearchBarInput state={state} input={input} setInput={setInput} />
       </Grid>
+      {answers.length > 0 ? (
+        <Grid item style={itemStyle} answers={answers} xs={1}>
+          <SearchIndicator answers={answers} selectionIdx={selectionIdx} />
+        </Grid>
+      ) : null}
       <Grid item style={itemStyle}>
-        <SearchBarControl state={state} search={search} />
+        <SearchBarControl
+          input={input}
+          state={state}
+          setState={setState}
+          answers={answers}
+          setAnswers={setAnswers}
+          errors={errors}
+          setErrors={setErrors}
+          selectionIdx={selectionIdx}
+          setSelectionIdx={setSelectionIdx}
+        />
       </Grid>
     </Grid>
   );

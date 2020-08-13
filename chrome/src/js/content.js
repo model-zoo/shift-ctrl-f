@@ -1,10 +1,41 @@
+import '../css/inject.css';
+import Mark from 'mark.js';
 import { MIN_CONTEXT_LENGTH } from './constants';
 import { Component, MessageType } from './types';
 
 import $ from 'jquery';
+import { v4 as uuidv4 } from 'uuid';
 
-const search = (query) => {
-  console.log('Query:', query);
+const DEBUG = false;
+const DATA_ATTR_ELEMENT_ID = 'data-ctrlf-element-uuid';
+const DATA_ATTR_SUCCESS = 'data-ctrlf-success';
+const DATA_ATTR_SELECTED = 'data-ctrlf-selected';
+
+const findAllElements = () => {
+  return $('[' + DATA_ATTR_ELEMENT_ID + ']');
+};
+
+const findElementById = (elementId) => {
+  const q = $('[' + DATA_ATTR_ELEMENT_ID + '=' + elementId + ']');
+  return q.length > 0 ? $(q[0]) : null;
+};
+
+const checkIfQueryDone = () => {
+  const allElements = findAllElements();
+  const waitingElements = allElements.filter((idx, node) => {
+    return $(node).attr(DATA_ATTR_SUCCESS) === undefined;
+  });
+
+  if (waitingElements.length === 0) {
+    console.log('Query done');
+    chrome.runtime.sendMessage({
+      type: MessageType.QUERY_DONE
+    });
+  }
+};
+
+const handleQuery = (msg) => {
+  console.log('Searching query:', msg.query);
 
   $('p').each((idx, element) => {
     const context = $(element).text();
@@ -12,49 +43,114 @@ const search = (query) => {
       return;
     }
 
-    const message = {
-      question: query,
-      context: context
-    };
+    const elementId = uuidv4();
+    $(element).attr(DATA_ATTR_ELEMENT_ID, elementId);
+    chrome.runtime.sendMessage(
+      {
+        type: MessageType.QUESTION,
+        elementId: elementId,
+        question: msg.query,
+        context: context
+      },
+      handleMsg
+    );
+  });
+};
 
-    chrome.runtime.sendMessage(message, (response) => {
-      if (response.type === 'success') {
-        if (response.answers.length > 0) {
-          console.log('Answers: ', response.answers);
-        }
-      } else if (response.type === 'error') {
-        console.log('Error: ', response);
-      } else {
-        console.log('Did not recognize response: ', response);
-      }
+const handleModelSuccess = (msg) => {
+  // Mark question on dom.
+  const element = findElementById(msg.question.elementId);
+  element.attr(DATA_ATTR_SUCCESS, 'true');
+
+  for (const answer of msg.answers) {
+    chrome.runtime.sendMessage({
+      type: MessageType.QUERY_RESULT,
+      answer: answer,
+      elementId: msg.question.elementId
     });
-  });
+  }
+
+  checkIfQueryDone();
 };
 
-const test = () => {
-  const message = {
-    context: `A Pod (as in a pod of whales or pea pod) is a group of one or more containers, with shared storage/network resources, and a specification for how to run the containers. A Pod's contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific "logical host": it contains one or more application containers which are relatively tightly coupled. In non-cloud contexts, applications executed on the same physical or virtual machine are analogous to cloud applications executed on the same logical host.`,
-    question: 'What is a pod?'
-  };
+const handleModelErr = (msg) => {
+  console.log('Model error: ', msg);
 
-  chrome.runtime.sendMessage(message, (response) => {
-    console.log('Got response: ', response);
+  // Mark question on dom.
+  const element = findElementById(msg.question.elementId);
+  element.attr(DATA_ATTR_SUCCESS, 'false');
+
+  chrome.runtime.sendMessage({
+    type: MessageType.QUERY_ERROR,
+    error: msg.error,
+    elementId: msg.elementId
   });
+
+  checkIfQueryDone();
 };
 
-chrome.runtime.onMessage.addListener((request, sender, response) => {
-  console.log('Recieved message: ', request, 'from:', sender);
-  if (request.to !== Component.CONTENT_SCRIPT) {
+const clearSelection = () => {
+  // Remove old highlight if it exists.
+  const oldElement = $('[' + DATA_ATTR_SELECTED + ']');
+  if (oldElement.length > 0) {
+    oldElement.removeAttr(DATA_ATTR_SELECTED);
+    var instance = new Mark(oldElement[0]);
+    instance.unmark();
+  }
+};
+
+const handleSelection = (msg) => {
+  clearSelection();
+
+  // Add new highlight;
+  const element = findElementById(msg.elementId);
+  element.attr(DATA_ATTR_SELECTED, 'true');
+  var instance = new Mark(element[0]);
+  instance.mark(msg.answer.text, {
+    acrossElements: true,
+    separateWordSearch: false
+  });
+
+  element[0].scrollIntoView();
+};
+
+const handleClear = () => {
+  clearSelection();
+  findAllElements()
+    .removeAttr(DATA_ATTR_SUCCESS)
+    .removeAttr(DATA_ATTR_ELEMENT_ID);
+};
+
+const handleMsg = (msg, sender, callback) => {
+  if (DEBUG) {
+    console.log('Recieved message: ', msg, 'from:', sender);
+  }
+
+  if (!msg.type) {
+    console.log('Invalid msg: ', msg);
     return;
   }
 
-  switch (request.type) {
+  switch (msg.type) {
     case MessageType.QUERY:
-      search(request.query);
-    default:
-      console.assert(False);
-  }
-});
+      handleQuery(msg);
+      break;
+    case MessageType.MODEL_SUCCESS:
+      handleModelSuccess(msg);
+      break;
+    case MessageType.MODEL_ERROR:
+      handleModelErr(msg);
+      break;
+    case MessageType.SELECT:
+      handleSelection(msg);
+      break;
+    case MessageType.CLEAR:
+      handleClear();
+      break;
 
-//search('What is a pod?');
-// test();
+    default:
+      console.error('Did not recognize message type:', msg);
+  }
+};
+
+chrome.runtime.onMessage.addListener(handleMsg);
