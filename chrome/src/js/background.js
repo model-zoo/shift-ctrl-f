@@ -62,3 +62,8 @@ chrome.runtime.onMessage.addListener((request, sender, callback) => {
       return true;
   }
 });
+
+// Open the popup
+chrome.commands.onCommand.addListener(function (command) {
+  console.log('onCommand event received for message: ', command);
+});

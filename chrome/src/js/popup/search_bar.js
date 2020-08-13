@@ -63,44 +63,23 @@ const registerListener = (setState, setAnswers, setErrors) => {
 const SearchBarInput = (props) => {
   return (
     <TextField
+      autoFocus
       fullWidth
       input={props.input}
       onChange={(e) => {
         props.setInput(e.target.value);
       }}
       disabled={props.state !== SearchBarState.READY}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          props.search();
+        }
+      }}
     />
   );
 };
 
 const SearchBarControl = (props) => {
-  const search = () => {
-    props.setState(SearchBarState.LOADING);
-    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
-      const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id, {
-        type: MessageType.QUERY,
-        query: props.input
-      });
-    });
-  };
-
-  const select = (newIdx) => {};
-
-  const reset = () => {
-    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
-      const activeTab = tabs[0];
-      chrome.tabs.sendMessage(activeTab.id, {
-        type: MessageType.CLEAR
-      });
-    });
-
-    props.setAnswers([]);
-    props.setErrors([]);
-    props.setSelectionIdx(0);
-    props.setState(SearchBarState.READY);
-  };
-
   return (
     <>
       <Grid container>
@@ -126,7 +105,7 @@ const SearchBarControl = (props) => {
         </Grid>
         {props.state === SearchBarState.READY && (
           <Grid item>
-            <IconButton size="small" onClick={search}>
+            <IconButton size="small" onClick={props.search}>
               <SearchIcon />
             </IconButton>
           </Grid>
@@ -140,7 +119,7 @@ const SearchBarControl = (props) => {
         )}
         {props.state === SearchBarState.DONE && (
           <Grid item>
-            <IconButton size="small" onClick={reset}>
+            <IconButton size="small" onClick={props.reset}>
               <CloseIcon />
             </IconButton>
           </Grid>
@@ -176,6 +155,31 @@ const SearchBar = (props) => {
     registerListener(setState, setAnswers, setErrors);
   }, [setState, setAnswers, setErrors]);
 
+  const search = () => {
+    setState(SearchBarState.LOADING);
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, {
+        type: MessageType.QUERY,
+        query: input
+      });
+    });
+  };
+
+  const reset = () => {
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const activeTab = tabs[0];
+      chrome.tabs.sendMessage(activeTab.id, {
+        type: MessageType.CLEAR
+      });
+    });
+
+    setAnswers([]);
+    setErrors([]);
+    setSelectionIdx(0);
+    setState(SearchBarState.READY);
+  };
+
   // Fire a selection event any time answers or selected index
   // changes.
   useEffect(() => {
@@ -208,7 +212,12 @@ const SearchBar = (props) => {
   return (
     <Grid container style={gridStyle} spacing={2}>
       <Grid item style={itemStyle} xs={answers.length > 0 ? 8 : 9}>
-        <SearchBarInput state={state} input={input} setInput={setInput} />
+        <SearchBarInput
+          state={state}
+          input={input}
+          setInput={setInput}
+          search={search}
+        />
       </Grid>
       {answers.length > 0 ? (
         <Grid item style={itemStyle} answers={answers} xs={1}>
@@ -218,12 +227,10 @@ const SearchBar = (props) => {
       <Grid item style={itemStyle}>
         <SearchBarControl
           input={input}
+          search={search}
+          reset={reset}
           state={state}
-          setState={setState}
           answers={answers}
-          setAnswers={setAnswers}
-          errors={errors}
-          setErrors={setErrors}
           selectionIdx={selectionIdx}
           setSelectionIdx={setSelectionIdx}
         />
