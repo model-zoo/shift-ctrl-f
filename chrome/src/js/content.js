@@ -6,7 +6,6 @@ import { Component, MessageType } from './types';
 import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
 
-const DEBUG = false;
 const DATA_ATTR_ELEMENT_ID = 'data-ctrlf-element-uuid';
 const DATA_ATTR_SUCCESS = 'data-ctrlf-success';
 const DATA_ATTR_SELECTED = 'data-ctrlf-selected';
@@ -42,6 +41,7 @@ const handleQuery = (msg) => {
     (idx, el) => $(el).text().length >= MIN_CONTEXT_LENGTH
   );
 
+  console.log('Searching', longParagraphs.length, 'paragraphs');
   if (longParagraphs.length === 0) {
     return chrome.runtime.sendMessage({
       type: MessageType.QUERY_DONE
@@ -112,13 +112,15 @@ const handleSelection = (msg) => {
   // Add new highlight;
   const element = findElementById(msg.elementId);
   element.attr(DATA_ATTR_SELECTED, 'true');
+  element[0].scrollIntoView({
+    block: 'end',
+    inline: 'nearest'
+  });
   var instance = new Mark(element[0]);
   instance.mark(msg.answer.text, {
     acrossElements: true,
     separateWordSearch: false
   });
-
-  element[0].scrollIntoView();
 };
 
 const handleClear = () => {
@@ -129,10 +131,6 @@ const handleClear = () => {
 };
 
 const handleMsg = (msg, sender, callback) => {
-  if (DEBUG) {
-    console.log('Recieved message: ', msg, 'from:', sender);
-  }
-
   if (!msg) {
     console.log('Invalid msg: ', msg);
     return;

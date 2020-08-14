@@ -36,7 +36,7 @@ var options = {
     content: path.join(__dirname, 'src', 'js', 'content.js')
   },
   chromeExtensionBoilerplate: {
-    notHotReload: ['content', 'background', 'src/models']
+    notHotReload: ['content', 'background']
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -73,7 +73,7 @@ var options = {
   plugins: [
     // clean the build folder
     new CleanWebpackPlugin({
-      cleanAfterEveryBuildPatterns: ['!manifest.json']
+      cleanAfterEveryBuildPatterns: ['!manifest.json', '!models/']
     }),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(['NODE_ENV']),
