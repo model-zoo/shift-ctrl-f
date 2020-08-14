@@ -25,7 +25,7 @@ const answer = (model, msg, callback) => {
       console.log('Send error:', error);
       callback({
         type: MessageType.MODEL_ERROR,
-        question: msg,
+        question: error,
         answers: [],
         error: error
       });
@@ -34,10 +34,10 @@ const answer = (model, msg, callback) => {
   return true;
 };
 
-chrome.runtime.onMessage.addListener((request, sender, callback) => {
-  console.log('Recieved message: ', request, 'from:', sender);
+chrome.runtime.onMessage.addListener((msg, sender, callback) => {
+  console.log('Recieved message: ', msg, 'from:', sender);
 
-  switch (request.type) {
+  switch (msg.type) {
     case MessageType.QUERY:
     case MessageType.QUERY_RESULT:
     case MessageType.QUERY_ERROR:
@@ -54,11 +54,11 @@ chrome.runtime.onMessage.addListener((request, sender, callback) => {
         });
         return true;
       } else {
-        return answer(window.__qna_model, request, callback);
+        return answer(window.__qna_model, msg, callback);
       }
 
     default:
-      console.error('Did not recognize message type: ', request);
+      console.error('Did not recognize message type: ', msg);
       return true;
   }
 });

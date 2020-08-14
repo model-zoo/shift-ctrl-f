@@ -39,8 +39,8 @@
     "commands": {
       "_execute_browser_action": {
         "suggested_key": {
-          "default": "Ctrl+Shift+F",
-          "mac": "Ctrl+Shift+F"
+          "default": "Ctrl+I",
+          "mac": "Ctrl+I"
         }
       }
     }

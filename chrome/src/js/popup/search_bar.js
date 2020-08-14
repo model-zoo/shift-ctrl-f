@@ -130,6 +130,10 @@ const SearchBarControl = (props) => {
 };
 
 const SearchIndicator = (props) => {
+  if (props.state === SearchBarState.DONE && props.answers.length === 0) {
+    return <span>no results</span>;
+  }
+
   if (props.answers.length === 0) {
     return null;
   }
@@ -211,7 +215,7 @@ const SearchBar = (props) => {
 
   return (
     <Grid container style={gridStyle} spacing={2}>
-      <Grid item style={itemStyle} xs={answers.length > 0 ? 8 : 9}>
+      <Grid item style={itemStyle} xs={state === SearchBarState.READY ? 9 : 8}>
         <SearchBarInput
           state={state}
           input={input}
@@ -219,11 +223,15 @@ const SearchBar = (props) => {
           search={search}
         />
       </Grid>
-      {answers.length > 0 ? (
+      {state === SearchBarState.READY ? null : (
         <Grid item style={itemStyle} answers={answers} xs={1}>
-          <SearchIndicator answers={answers} selectionIdx={selectionIdx} />
+          <SearchIndicator
+            state={state}
+            answers={answers}
+            selectionIdx={selectionIdx}
+          />
         </Grid>
-      ) : null}
+      )}
       <Grid item style={itemStyle}>
         <SearchBarControl
           input={input}

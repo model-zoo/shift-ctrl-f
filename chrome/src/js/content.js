@@ -37,12 +37,19 @@ const checkIfQueryDone = () => {
 const handleQuery = (msg) => {
   console.log('Searching query:', msg.query);
 
-  $('p').each((idx, element) => {
-    const context = $(element).text();
-    if (context.length < MIN_CONTEXT_LENGTH) {
-      return;
-    }
+  const paragraphs = $('p');
+  const longParagraphs = paragraphs.filter(
+    (idx, el) => $(el).text().length >= MIN_CONTEXT_LENGTH
+  );
 
+  if (longParagraphs.length === 0) {
+    return chrome.runtime.sendMessage({
+      type: MessageType.QUERY_DONE
+    });
+  }
+
+  longParagraphs.each((idx, element) => {
+    const context = $(element).text();
     const elementId = uuidv4();
     $(element).attr(DATA_ATTR_ELEMENT_ID, elementId);
     chrome.runtime.sendMessage(
@@ -126,7 +133,7 @@ const handleMsg = (msg, sender, callback) => {
     console.log('Recieved message: ', msg, 'from:', sender);
   }
 
-  if (!msg.type) {
+  if (!msg) {
     console.log('Invalid msg: ', msg);
     return;
   }
