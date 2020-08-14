@@ -1,14 +1,17 @@
 import '../css/inject.css';
 import Mark from 'mark.js';
-import { MIN_CONTEXT_LENGTH } from './constants';
+import {
+  DATA_ATTR_ELEMENT_ID,
+  DATA_ATTR_SELECTED,
+  DATA_ATTR_SUCCESS,
+  CLASS_NAME_MARKED,
+  CLASS_NAME_MARKED_SCORE,
+  MIN_CONTEXT_LENGTH
+} from './constants';
 import { Component, MessageType } from './types';
 
 import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
-
-const DATA_ATTR_ELEMENT_ID = 'data-ctrlf-element-uuid';
-const DATA_ATTR_SUCCESS = 'data-ctrlf-success';
-const DATA_ATTR_SELECTED = 'data-ctrlf-selected';
 
 const findAllElements = () => {
   return $('[' + DATA_ATTR_ELEMENT_ID + ']');
@@ -102,7 +105,11 @@ const clearSelection = () => {
   if (oldElement.length > 0) {
     oldElement.removeAttr(DATA_ATTR_SELECTED);
     var instance = new Mark(oldElement[0]);
-    instance.unmark();
+    instance.unmark({
+      done: () => {
+        $('.' + CLASS_NAME_MARKED_SCORE).remove();
+      }
+    });
   }
 };
 
@@ -118,8 +125,17 @@ const handleSelection = (msg) => {
   });
   var instance = new Mark(element[0]);
   instance.mark(msg.answer.text, {
+    className: CLASS_NAME_MARKED,
     acrossElements: true,
-    separateWordSearch: false
+    separateWordSearch: false,
+    done: () => {
+      const scoreEl = $('<span/>')
+        .addClass(CLASS_NAME_MARKED_SCORE)
+        .text(msg.answer.score.toFixed(4));
+      $('.' + CLASS_NAME_MARKED)
+        .first()
+        .append(scoreEl);
+    }
   });
 };
 

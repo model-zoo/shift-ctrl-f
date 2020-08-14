@@ -3,3 +3,19 @@ p[data-ctrlf-selected] {
   border-color: black;
   border-width: 2px;
 }
+
+.ctrlf-marked {
+  position: relative;
+  display: inline;
+}
+
+.ctrlf-marked-score {
+  position: absolute;
+  display: inline;
+  bottom: 100%;
+  left: 0;
+
+  background-color: yellow;
+  padding: 2px 4px;
+  font-size: 12px;
+}
