@@ -6,7 +6,7 @@ import {
   DATA_ATTR_SUCCESS,
   CLASS_NAME_MARKED,
   CLASS_NAME_MARKED_SCORE,
-  MIN_CONTEXT_LENGTH
+  MIN_TOKENS
 } from './constants';
 import { Component, MessageType } from './types';
 
@@ -36,23 +36,39 @@ const checkIfQueryDone = () => {
   }
 };
 
+// Heuristic to decide whether the element is worth searching or not.
+const searchableElement = (idx, el) => {
+  const validToken = (token) => {
+    if (!token) {
+      return false;
+    }
+
+    const alphaNum = token.match(/[a-zA-Z0-9]/g);
+    return alphaNum && alphaNum.length > 0;
+  };
+
+  // Split by spaces, remove tokens without alphanumeric characters.
+  const tokens = $(el).text().split(' ').filter(validToken);
+  return tokens.length > MIN_TOKENS;
+};
+
 const handleQuery = (msg) => {
   console.log('Searching query:', msg.query);
 
-  const paragraphs = $('p');
-  const longParagraphs = paragraphs.filter(
-    (idx, el) => $(el).text().length >= MIN_CONTEXT_LENGTH
-  );
+  const textElements = $('p,ul,ol');
+  const searchable = textElements
+    .filter(searchableElement)
+    .filter((idx, el) => el.offsetParent !== null);
 
-  console.log('Searching', longParagraphs.length, 'paragraphs');
-  if (longParagraphs.length === 0) {
+  console.log('Searching', searchable.length, 'text elements');
+  if (searchable.length === 0) {
     return chrome.runtime.sendMessage({
       type: MessageType.QUERY_DONE
     });
   }
 
-  longParagraphs.each((idx, element) => {
-    const context = $(element).text();
+  searchable.each((idx, element) => {
+    const context = $(element).text().trim();
     const elementId = uuidv4();
     $(element).attr(DATA_ATTR_ELEMENT_ID, elementId);
     chrome.runtime.sendMessage(

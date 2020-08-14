@@ -43,7 +43,7 @@ const handleAnswer = (model, msg) => {
     .catch((error) => {
       sendMessageToContent({
         type: MessageType.QUESTION_ERROR,
-        question: error,
+        question: msg,
         answers: [],
         error: error
       });

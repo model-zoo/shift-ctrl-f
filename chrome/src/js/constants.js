@@ -7,4 +7,4 @@ export const DATA_ATTR_ELEMENT_ID = 'data-ctrlf-element-uuid';
 export const DATA_ATTR_SUCCESS = 'data-ctrlf-success';
 export const DATA_ATTR_SELECTED = 'data-ctrlf-selected';
 
-export const MIN_CONTEXT_LENGTH = 100;
+export const MIN_TOKENS = 10;
