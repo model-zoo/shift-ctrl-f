@@ -131,19 +131,25 @@ const handleClear = () => {
 };
 
 const handleMsg = (msg, sender, callback) => {
+  console.log('recieved msg:', msg, 'from:', sender);
+
   if (!msg) {
-    console.log('Invalid msg: ', msg);
     return;
   }
 
   switch (msg.type) {
+    case MessageType.POPUP_LOADED:
+    case MessageType.MODEL_LOADED:
+    case MessageType.MODEL_ERROR:
+      break;
+
     case MessageType.QUERY:
       handleQuery(msg);
       break;
-    case MessageType.MODEL_SUCCESS:
+    case MessageType.QUESTION_RESULT:
       handleModelSuccess(msg);
       break;
-    case MessageType.MODEL_ERROR:
+    case MessageType.QUESTION_ERROR:
       handleModelErr(msg);
       break;
     case MessageType.SELECT:

@@ -21,7 +21,14 @@ export const MessageType = {
   // Question from content script -> background model.
   QUESTION: 'QUESTION',
   // Answer from background model -> content.
-  MODEL_SUCCESS: 'MODEL_SUCCESS',
+  QUESTION_RESULT: 'QUESTION_RESULT',
   // Error from background model -> content.
+  QUESTION_ERROR: 'QUESTION_ERROR',
+
+  // Popup broadcast message on load.
+  POPUP_LOADED: 'POPUP_LOADED',
+  // Model broadcast message when loaded.
+  MODEL_LOADED: 'MODEL_LOADED',
+  // Model error
   MODEL_ERROR: 'MODEL_ERROR'
 };
