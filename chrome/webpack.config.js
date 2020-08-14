@@ -36,7 +36,7 @@ var options = {
     content: path.join(__dirname, 'src', 'js', 'content.js')
   },
   chromeExtensionBoilerplate: {
-    notHotReload: ['content', 'background']
+    notHotReload: ['content', 'background', 'src/models']
   },
   output: {
     path: path.join(__dirname, 'build'),
