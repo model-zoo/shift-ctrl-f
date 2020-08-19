@@ -19,7 +19,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { Component, MessageType } from '../types';
+import { Component, MessageType } from '../message_types';
 import { useTimeout } from './timeout';
 import { hot } from 'react-hot-loader';
 

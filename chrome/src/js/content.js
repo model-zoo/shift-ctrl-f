@@ -8,7 +8,7 @@ import {
   CLASS_NAME_MARKED_SCORE,
   MIN_TOKENS
 } from './constants';
-import { Component, MessageType } from './types';
+import { Component, MessageType } from './message_types';
 
 import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';

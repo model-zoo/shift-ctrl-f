@@ -1,8 +1,7 @@
 import './hot-reload';
 
-import { Component, MessageType } from './types';
+import { Component, MessageType } from './message_types';
 
-import * as tf from '@tensorflow/tfjs';
 const qna = require('@tensorflow-models/qna');
 
 const sendMessageToContent = (message) => {
