@@ -163,11 +163,11 @@ const handleClear = () => {
 };
 
 const handleMsg = (msg, sender, callback) => {
-  console.log('recieved msg:', msg, 'from:', sender);
-
   if (!msg) {
     return;
   }
+
+  console.log('recieved msg:', msg, 'from:', sender);
 
   switch (msg.type) {
     case MessageType.POPUP_LOADED:

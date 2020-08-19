@@ -195,8 +195,6 @@ const SearchBar = (props) => {
   var [selectionIdx, setSelectionIdx] = useState(0);
   var [input, setInput] = useState('');
 
-  console.log(answers);
-
   // Register event listeners for recieving answers and errors
   // from the content script.
   useEffect(() => {

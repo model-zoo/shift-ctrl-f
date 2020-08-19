@@ -22,7 +22,7 @@ const sendMessageToPopup = (message) => {
   chrome.runtime.sendMessage(message);
 };
 
-qna.load({ modelUrl: 'models/mobilebert_1', fromTFHub: true }).then((model) => {
+qna.load().then((model) => {
   window.__qna_model = model;
   sendMessageToPopup({
     type: MessageType.MODEL_LOADED

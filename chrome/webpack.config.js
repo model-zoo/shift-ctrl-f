@@ -73,7 +73,7 @@ var options = {
   plugins: [
     // clean the build folder
     new CleanWebpackPlugin({
-      cleanAfterEveryBuildPatterns: ['!manifest.json', '!models/']
+      cleanAfterEveryBuildPatterns: ['!manifest.json']
     }),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(['NODE_ENV']),
@@ -90,12 +90,6 @@ var options = {
             })
           );
         }
-      }
-    ]),
-    new CopyWebpackPlugin([
-      {
-        from: 'src/models',
-        to: 'models/'
       }
     ]),
     new HtmlWebpackPlugin({
