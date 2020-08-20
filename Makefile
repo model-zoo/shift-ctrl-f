@@ -1,5 +1,11 @@
 .PHONY: all build
 
+fmt:
+	prettier --write .
+
+check:
+	prettier --check .
+
 develop:
 	yarn run start
 
