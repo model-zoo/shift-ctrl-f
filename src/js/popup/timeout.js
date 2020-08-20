@@ -17,6 +17,6 @@ export const useTimeout = (callback, delay, ...deps) => {
       const id = setTimeout(tick, delay);
       return () => clearTimeout(id);
     }
-  /* eslint-disable */
+    /* eslint-disable */
   }, [delay, ...deps]);
 };

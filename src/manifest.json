@@ -1,34 +1,29 @@
 {
-    "manifest_version": 2,
-    "name": "Super Ctrl F",
-    "short_name": "Super Ctrl F",
-    "author": "Yoav Zimmerman <yoavzimmerman@gmail.com>",
-    "background": {
-      "page": "background.html"
-    },
-    "browser_action": {
-      "default_popup": "popup.html"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "http://*/*",
-                "https://*/*"
-            ],
-            "js": ["content.bundle.js"],
-            "run_at": "document_end"
-        }
-    ],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "web_accessible_resources": [
-        "models/*"
-    ],
-    "commands": {
-      "_execute_browser_action": {
-        "suggested_key": {
-          "default": "Ctrl+I",
-          "mac": "Ctrl+I"
-        }
+  "manifest_version": 2,
+  "name": "Super Ctrl F",
+  "short_name": "Super Ctrl F",
+  "author": "Yoav Zimmerman <yoavzimmerman@gmail.com>",
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.bundle.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "web_accessible_resources": ["models/*"],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+I",
+        "mac": "Ctrl+I"
       }
     }
+  }
 }
