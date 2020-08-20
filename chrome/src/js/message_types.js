@@ -1,28 +1,48 @@
 export const MessageType = {
-  // Query from popup -> content script.
+  // User types in a query.
+  // From: Popup
+  // To: Content Script
   QUERY: 'QUERY',
-  // Select from popup -> content script.
+
+  // User selects a query result.
+  // From: Popup
+  // To: Content Script
   SELECT: 'SELECT',
-  // Clear selection and search from popup -> content script.
+
+  // User clears selection.
+  // From: Popup
+  // To: Content Script
   CLEAR: 'CLEAR',
-  // Query result from content script -> popup.
+
+  // Query has resulted in a match for an element on the page.
+  // From: Content Script
+  // To: Popup
   QUERY_RESULT: 'QUERY_RESULT',
-  // Query error from content script -> popup.
   QUERY_ERROR: 'QUERY_ERROR',
-  // Query is done when content script -> popup sends this.
+  // Indicates that all the elements of the page have been analyzed and the
+  // query is "done"
+  // From: Content Script
+  // To: Popup
   QUERY_DONE: 'QUERY_DONE',
 
-  // Question from content script -> background model.
+  // Model request for a question-answer pair.
+  // From: Content Script
+  // To: Background
   QUESTION: 'QUESTION',
-  // Answer from background model -> content.
+  // Model responds to a question-answer pair with success or error.
+  // From: Background
+  // To: Content Script
   QUESTION_RESULT: 'QUESTION_RESULT',
-  // Error from background model -> content.
   QUESTION_ERROR: 'QUESTION_ERROR',
 
-  // Popup broadcast message on load.
+  // Popup sends this message when opened.
+  // From: Popup
+  // To: Background
   POPUP_LOADED: 'POPUP_LOADED',
-  // Model broadcast message when loaded.
+  // Background sends this message on successful model load or error. Used to
+  // indicate that the model is ready to the user.
+  // From: Background
+  // To: Popup
   MODEL_LOADED: 'MODEL_LOADED',
-  // Model error
   MODEL_ERROR: 'MODEL_ERROR'
 };
