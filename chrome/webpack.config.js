@@ -62,7 +62,7 @@ var options = {
       },
       {
         test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
+        loader: ['babel-loader', 'eslint-loader'],
         exclude: /node_modules/
       }
     ]
@@ -76,7 +76,7 @@ var options = {
       cleanAfterEveryBuildPatterns: ['!manifest.json']
     }),
     // expose and write the allowed env vars on the compiled bundle
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new CopyWebpackPlugin([
       {
         from: 'src/manifest.json',
