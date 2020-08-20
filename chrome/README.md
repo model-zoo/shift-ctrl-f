@@ -1,7 +1,7 @@
-# Ctrl-F++: Semantic Search for the Browser powered by MobileBERT
+# Ctrl-F++: Semantic Search for the Browser
 
-Uses a BERT question answering model to query the information available on a
-webpage with NLP. Uses [https://arxiv.org/abs/2004.02984](MobileBERT)
+Use a BERT question answering model to query the information available on a
+webpage with natural language. Uses [https://arxiv.org/abs/2004.02984](MobileBERT)
 fine-tuned on [https://rajpurkar.github.io/SQuAD-explorer/](SQuAD) via
 [TensorFlowJS](https://www.tensorflow.org/js) to search for and return relevant
 answers in text.
@@ -10,7 +10,7 @@ TODO: Image.
 
 *This extension is an experiment.* Deep learning models like BERT are powerful
 but may return unpredictable and/or biased results that are tough to interpret.
-Please apply best judgement when analyzing results.
+Please apply best judgement when analyzing search results.
 
 ### Why?
 
@@ -28,10 +28,9 @@ semantic search, you can directly phrase your question `"What is the difference
 between live mode and test mode?"`. We see that the model returns a relevant
 result, even though the page does not contain the term "`difference`".
 
-### How it works
+### How It Works
 
-The extension loads a MobileBERT in the background using TensorFlowJS. Every
-time a search happens:
+Every time a user executes a search:
 
 1) The content script collects all `<p>`, `<ul>`, and `<ol>` elements on the
 page and extracts text from each.
@@ -40,7 +39,7 @@ element, using the query as the question and the element's text as the context.
 3) If a match is returned by the model, it is highlighted within the page along
 with the confidence score returned by the model.
 
-### Technical Design.
+### Technical Design
 
 There are three main components that interact via [Message
 Passing](https://developer.chrome.com/extensions/messaging) to orchestrate the
@@ -53,4 +52,5 @@ responsible for reading from and manipulating the DOM.
 3) Background (`background.js`): Background script that loads and executes the
 TensorFlowJS model on question-context pairs.
 
-`src/js/message_types.js` contains the messages used to interact between these three components.
+`src/js/message_types.js` contains the messages used to interact between these
+three components.
