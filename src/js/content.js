@@ -36,7 +36,7 @@ const checkIfQueryDone = () => {
   }
 };
 
-// Heuristic to decide whether the element is worth searching or not.
+// Heuristic to decide whether the element is worth searching.
 const searchableElement = (idx, el) => {
   const validToken = (token) => {
     if (!token) {

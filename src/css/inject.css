@@ -1,5 +1,6 @@
 p[data-ctrlf-selected],
-li[data-ctrlf-selected] {
+ul[data-ctrlf-selected]
+ol[data-ctrlf-selected] {
   border-style: dashed;
   border-color: black;
   border-width: 2px;
