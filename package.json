@@ -1,7 +1,7 @@
 {
-  "name": "say-less",
+  "name": "ctrl-f-plusplus",
   "version": "0.1.0",
-  "description": "Write shorter, more effective emails by using our AI assistant to summarize long passages while drafting in gmail.",
+  "description": "Search the information available on a webpage using natural language.",
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js"

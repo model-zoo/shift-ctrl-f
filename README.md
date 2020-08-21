@@ -1,10 +1,12 @@
-# Ctrl-F++: Semantic Search for the Browser
+# Ctrl-Shift-F: Semantic Search for the Browser
 
-Use a BERT question answering model to query the information available on a
-webpage with natural language. Uses [https://arxiv.org/abs/2004.02984](MobileBERT)
-fine-tuned on [https://rajpurkar.github.io/SQuAD-explorer/](SQuAD) via
-[TensorFlowJS](https://www.tensorflow.org/js) to search for and return relevant
-answers in text.
+Search the information available on a webpage using
+natural language instead of an exact string match. Uses
+[https://arxiv.org/abs/2004.02984](MobileBERT)
+fine-tuned on
+[https://rajpurkar.github.io/SQuAD-explorer/](SQuAD)
+via [TensorFlowJS](https://www.tensorflow.org/js) to
+search for and return relevant answers in text.
 
 TODO: Image.
 
@@ -38,7 +40,7 @@ Every time a user executes a search:
 3. If a match is returned by the model, it is highlighted within the page along
    with the confidence score returned by the model.
 
-### Technical Design
+### Architecture
 
 There are three main components that interact via [Message
 Passing](https://developer.chrome.com/extensions/messaging) to orchestrate the
@@ -53,3 +55,17 @@ extension:
 
 `src/js/message_types.js` contains the messages used to interact between these
 three components.
+
+### Development
+
+```
+make develop
+```
+
+
+
+### Publishing
+
+```
+make publish
+```
