@@ -8,7 +8,7 @@ fine-tuned on
 via [TensorFlowJS](https://www.tensorflow.org/js) to
 search for and return relevant answers in text.
 
-TODO: Image.
+![Ctrl-Shift-F Demo](./demo.gif)
 
 _This extension is an experiment._ Deep learning models like BERT are powerful
 but may return unpredictable and/or biased results that are tough to interpret.
@@ -62,6 +62,10 @@ three components.
 make develop
 ```
 
+The unpacked extension will be placed inside of `build/`. See [Google Chrome
+Extension developer
+documentation](https://developer.chrome.com/extensions/getstarted) to load the
+unpacked extension into your Chrome browser in development mode.
 
 
 ### Publishing
@@ -69,3 +73,5 @@ make develop
 ```
 make publish
 ```
+
+A zipped extension file ready for upload will be placed inside of `dist/`.
