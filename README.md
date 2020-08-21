@@ -4,32 +4,32 @@
 
 Search the information available on a webpage using
 natural language instead of an exact string match. Uses
-[https://arxiv.org/abs/2004.02984](MobileBERT)
+[MobileBERT](https://arxiv.org/abs/2004.02984)
 fine-tuned on
-[https://rajpurkar.github.io/SQuAD-explorer/](SQuAD)
+[SQuAD](https://rajpurkar.github.io/SQuAD-explorer/)
 via [TensorFlowJS](https://www.tensorflow.org/js) to
-search for and return relevant answers in text.
+search for answers and mark relevant elements on the web page.
 
 ![Ctrl-Shift-F Demo](./demo.gif)
 
-_This extension is an experiment._ Deep learning models like BERT are powerful
+**This extension is an experiment.** Deep learning models like BERT are powerful
 but may return unpredictable and/or biased results that are tough to interpret.
 Please apply best judgement when analyzing search results.
 
 ### Why?
 
-Traditional search uses string-matching to find information within a webpage.
-Although most of us have trained ourselves to search for what we're looking for
-via string match, this can sometimes be a proxy for the true information we're
-trying to discover.
+Ctrl-F uses exact string-matching to find information within a webpage. String
+match is inherently a proxy heuristic for the true content -- in most cases it
+works very well, but in some cases it can be a bad proxy.
 
-In our example above, imagine you're browsing the stripe documentation page on
-testing ([https://stripe.com/docs/testing](https://stripe.com/docs/testing)),
-aiming to understand the difference between test mode and live mode. With
-string matching, you might search through some relevant phrases `"live mode"`,
-`"test mode"`, or `"difference"` and scan through the various results. With
-semantic search, you can directly phrase your question `"What is the difference between live mode and test mode?"`. We see that the model returns a relevant
-result, even though the page does not contain the term "`difference`".
+In our example above we search
+[https://stripe.com/docs/testing](https://stripe.com/docs/testing), aiming to
+understand the **difference between test mode and live mode**. With string
+matching, you might search through some relevant phrases `"live mode"`, `"test
+mode"`, and/oror `"difference"` and scan through results. With semantic search, you
+can directly phrase your question `"What is the difference between live mode
+and test mode?"`. We see that the model returns a relevant result, even though
+the page does not contain the term "`difference`".
 
 ### How It Works
 
