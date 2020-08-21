@@ -1,5 +1,7 @@
 # Ctrl-Shift-F: Semantic Search for the Browser
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 Search the information available on a webpage using
 natural language instead of an exact string match. Uses
 [https://arxiv.org/abs/2004.02984](MobileBERT)
