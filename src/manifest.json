@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Ctrl-Shift-F",
-  "short_name": "Ctrl-Shift-F",
+  "name": "Shift-Ctrl-F",
+  "short_name": "Shift-Ctrl-F",
   "author": "Yoav Zimmerman <yoavzimmerman@gmail.com>",
   "background": {
     "page": "background.html"
@@ -16,7 +16,6 @@
       "run_at": "document_end"
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {

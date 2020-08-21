@@ -1,5 +1,5 @@
 {
-  "name": "ctrl-f-plusplus",
+  "name": "shift-ctrl-f",
   "version": "0.1.0",
   "description": "Search the information available on a webpage using natural language.",
   "scripts": {
