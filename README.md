@@ -60,6 +60,14 @@ three components.
 
 ### Development
 
+Make sure you have these dependencies installed.
+
+1) [Node](https://nodejs.org/en/download/)
+2) [Yarn](https://classic.yarnpkg.com/en/docs/install)
+3) [Prettier](https://prettier.io/docs/en/install.html)
+
+Then run:
+
 ```
 make develop
 ```
@@ -68,7 +76,6 @@ The unpacked extension will be placed inside of `build/`. See [Google Chrome
 Extension developer
 documentation](https://developer.chrome.com/extensions/getstarted) to load the
 unpacked extension into your Chrome browser in development mode.
-
 
 ### Publishing
 
