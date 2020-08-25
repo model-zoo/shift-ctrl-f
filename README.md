@@ -1,4 +1,6 @@
-# Ctrl-Shift-F: Semantic Search for the Browser
+# Shift-Ctrl-F: Semantic Search for the Browser
+
+![Shift-Ctrl-F](./assets/chrome-store-banner.png)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -10,7 +12,7 @@ fine-tuned on
 via [TensorFlowJS](https://www.tensorflow.org/js) to
 search for answers and mark relevant elements on the web page.
 
-![Ctrl-Shift-F Demo](./demo.gif)
+![Shift-Ctrl-F Demo](./assets/demo.gif)
 
 **This extension is an experiment.** Deep learning models like BERT are powerful
 but may return unpredictable and/or biased results that are tough to interpret.
