@@ -73,7 +73,7 @@ unpacked extension into your Chrome browser in development mode.
 ### Publishing
 
 ```
-make publish
+make build
 ```
 
 A zipped extension file ready for upload will be placed inside of `dist/`.
