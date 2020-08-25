@@ -26,7 +26,7 @@ In our example above we search
 [https://stripe.com/docs/testing](https://stripe.com/docs/testing), aiming to
 understand the **difference between test mode and live mode**. With string
 matching, you might search through some relevant phrases `"live mode"`, `"test
-mode"`, and/oror `"difference"` and scan through results. With semantic search, you
+mode"`, and/or `"difference"` and scan through results. With semantic search, you
 can directly phrase your question `"What is the difference between live mode
 and test mode?"`. We see that the model returns a relevant result, even though
 the page does not contain the term "`difference`".
