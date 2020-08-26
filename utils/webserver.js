@@ -32,11 +32,7 @@ var server = new WebpackDevServer(compiler, {
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
-  disableHostCheck: true,
-  https: {
-//    key: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.key'),
-//    cert: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.crt')
-  }
+  disableHostCheck: true
 });
 
 server.listen(env.PORT);
