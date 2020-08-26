@@ -34,8 +34,8 @@ var server = new WebpackDevServer(compiler, {
   },
   disableHostCheck: true,
   https: {
-    key: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.key'),
-    cert: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.crt')
+//    key: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.key'),
+//    cert: fs.readFileSync('/Users/yoavzimmerman/keys/localhost.crt')
   }
 });
 
