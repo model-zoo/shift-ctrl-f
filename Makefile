@@ -12,7 +12,7 @@ develop:
 	yarn run start
 
 build:
-	npm install
+	yarn install
 	NODE_ENV=production yarn run build
 	mkdir -p dist
 	cd build && zip -r ../dist/shift-ctrl-f-$(PACKAGE_VERSION).zip .
