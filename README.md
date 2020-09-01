@@ -4,6 +4,8 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+[![Chrome Web Store Link](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_340x96.png)](https://chrome.google.com/webstore/detail/shift-ctrl-f-semantic-sea/alnafbdjkoiljlomnbcknehahbjoiped)
+
 Search the information available on a webpage using
 natural language instead of an exact string match. Uses
 [MobileBERT](https://arxiv.org/abs/2004.02984)
